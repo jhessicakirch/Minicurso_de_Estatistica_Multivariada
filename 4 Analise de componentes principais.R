@@ -16,8 +16,10 @@ pardais
 
 # Matrizes de correlação e de covariância
 R <- cor(pardais[,-1])
+round(R, 3)
+
 C <- var(scale(pardais[,-1]))
-round(C,3)
+round(C, 3)
 
 # Autovalores e autovetores da matriz
 eigen(C)
@@ -30,22 +32,9 @@ pardais_acp$sdev # raíz quadrada dos autovalores
 pardais_acp$rotation # autovetores
 
 
-# Criando uma tabela com autovalores e variância explicada e acumulada
-(autovalores_pardais <- pardais_acp$sdev^2)     # Autovalores são dados por sdev^2
-names(autovalores_pardais) <- paste("CP", 1:5, sep="")
-autovalores_pardais
-sumlambdas <- sum(autovalores_pardais)
-propvar <- autovalores_pardais/sumlambdas
-cumvar_sparrows <- cumsum(propvar)
-tabela <- rbind(autovalores_pardais,propvar,cumvar_sparrows)
-rownames(tabela) <- c("Autovalores","Prop. variância","Prop. variância acumulada")
-# Gerando a tabela com dados arredondados
-round(tabela,4)                         
-
-
 # Interpretando os autovetores
 print(pardais_acp) 
-# PC1: média das medidas. Pode ser chamado de indice de tamanho das pardocas
+# PC1: Pode ser chamado de indice de tamanho das pardocas
 # PC2: contraste entre extensão alar, comprimento do bico e cabeça,
 #      comprimento do úmero contra o comprimento da quilha do esterno. Pode
 #      representar uma diferença de forma entre pardocas.
@@ -69,6 +58,12 @@ ggplot(data = biplot, aes(x = PC1, y = PC2)) +
   geom_hline(yintercept = 0)
 
 
+# Utilizando o pacote factoextra
+#install.packages("factoextra")
+library(factoextra)
+fviz_pca_biplot(pardais_acp, ggtheme = theme_grey())
+
+
 # Exemplo 2 - Empregos nos países europeus --------------------------------
 
 paises <- read.table("Euroemp.txt", h=T)
@@ -88,18 +83,6 @@ paises
 paises_acp <- prcomp(paises[,-c(1,2)], scale=TRUE)
 summary(paises_acp)
 
-# Criando uma tabela com autovalores e variância explicada e acumulada
-(autovalores <- paises_acp$sdev^2)     # Autovalores são dados por sdev^2
-names(autovalores) <- paste("CP", 1:9, sep="")
-autovalores
-sumlambdas <- sum(autovalores)
-propvar <- autovalores/sumlambdas
-cumvar <- cumsum(propvar)
-tabela <- rbind(autovalores,propvar,cumvar)
-rownames(tabela) <- c("Autovalores","Prop. variância","Prop. variância acumulada")
-# Gerando a tabela com dados arredondados
-round(tabela,4)                         
-
 
 # Interpretando os autovetores
 print(paises_acp)   
@@ -118,8 +101,6 @@ print(paises_acp)
 biplot <- data.frame(paises_acp$x, Country = paises$Country)
 biplot
 
-library(ggplot2)
-
 ggplot(data = biplot, aes(x = PC1, y = PC2, label = Country)) +
   geom_text( size = 3) +
   geom_vline(xintercept = 0) +
@@ -128,7 +109,14 @@ ggplot(data = biplot, aes(x = PC1, y = PC2, label = Country)) +
     x = "CP1 (34,58%)",
     y = "CP2 (20,10%)")
 
-# Exemplo cães pré-históricos --------------------------------------
+# Exemplo agrupamento + ACP com cães pré-históricos --------------------------------------
+
+# Mand.Breadth = Largura da mandíbula;
+# Mand.Height = Altura da mandíbula;
+# Mol1.Length =  Comprimento do primeiro molar;
+# Mol1.Breadth = Largura do primeiro molar;
+# Mol1.3.Length = Comprimento do primeiro ao terceiro molar inclusive;
+# Mol1.4.Length = Comprimento do primeiro ao quarto molar inclusive;
 
 dogs <- read.table(file = "Prehistoric dogs.txt", 
                    header = TRUE)
