@@ -49,3 +49,21 @@ fit.pc
 round(fit.pc$values, 3) # Autovalores
 fit.pc$loadings         # Autovetores
 fit.pc$communality      # Comunalidade
+
+# Criando um gráfico biplot
+biplot <- data.frame(fit.pc$scores, Survivorship = pardais$Survivorship)
+biplot
+
+library(ggplot2)
+ggplot(data = biplot, aes(x = RC1, y = RC2)) +
+  geom_point(aes(color = Survivorship)) +
+  labs(
+    x = "RC1",
+    y = "RC2",
+    color = "Sobrevivência") +
+  scale_color_manual(values=c("black", "red"),
+                     labels = c("Não sobreviventes", "Sobreviventes")) +
+  theme(legend.position="bottom") +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0)
+
