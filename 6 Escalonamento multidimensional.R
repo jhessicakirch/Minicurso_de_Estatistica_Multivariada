@@ -13,13 +13,13 @@ colnames(d) <- capitais
 rownames(d) <- capitais
 d
 
-dist <- as.dist(d)
+distancia <- as.dist(d)
 
 #install.packages("MASS")
 library(MASS)
 
 # Escalonamento multidimensional
-EM <- isoMDS(dist)
+EM <- isoMDS(distancia)
 EM$stress
 EM$points
 
@@ -81,14 +81,14 @@ colnames(d) <- nomes
 
 d
 
-dist <- as.dist(d)
+distancia <- as.dist(d)
 
 # Escalonamento multidimensional com 2 dimensões
-EM2 <- isoMDS(dist, k = 2)
+EM2 <- isoMDS(distancia, k = 2)
 EM2$stress
 
 # Escalonamento multidimensional com 3 dimensões
-EM3 <- isoMDS(dist, k = 3)
+EM3 <- isoMDS(distancia, k = 3)
 EM3$stress
 
 # Para k=2
@@ -105,7 +105,7 @@ ggplot(data = dados, aes(x = X, y = Y, label = Nomes)) +
 # Colorindo os nomes de acordo com o partido
 #install.packages("stringr")
 library(stringr)
-nomes.novo <- str_split_fixed(nomes, " ",2)
+nomes.novo <- str_split_fixed(string = nomes, pattern = " ", n = 2)
 
 dados$Nomes <- nomes.novo[,1]
 dados$Partido <- nomes.novo[,2]
@@ -113,7 +113,7 @@ dados$Partido <- nomes.novo[,2]
 ggplot(data = dados, aes(x = X, y = Y, label = Nomes, Group = Partido)) +
   geom_text_repel(aes(colour = Partido), size = 5) +
   scale_color_manual(values=c("red", "blue"),
-                     labels = c("Republicanos", "Democratas"))
+                     labels = c("(R)" = "Republicanos", "(D)" = "Democratas"))
 
 # Exemplo: Emprego em Países Europeus -------------------------------------
 
@@ -133,14 +133,14 @@ paises
 
 rownames(paises) <- paises$Country
 paises.padronizado <- scale(paises[,3:11])
-dist <- dist(paises.padronizado, method = "euclidean")
+distancia <- dist(paises.padronizado, method = "euclidean")
 
 # Escalonamento multidimensional com 2 dimensões
-EM2 <- isoMDS(dist, k = 2)
+EM2 <- isoMDS(distancia, k = 2)
 EM2$stress
 
 # Escalonamento multidimensional com 3 dimensões
-EM3 <- isoMDS(dist, k = 3)
+EM3 <- isoMDS(distancia, k = 3)
 EM3$stress
 
 # Para k=2
@@ -155,10 +155,9 @@ dados <- data.frame(Nomes = paises$Country,
 ggplot(data = dados, aes(x = X, y = Y, label = Nomes, Group = Grupo)) +
   geom_text_repel(aes(colour = Grupo), size = 6) +
   scale_color_manual(values=c("green", "blue", "red", "black"),
-                     labels = c("Países de leste europeu", 
-                                "Área européia de livre comércio",
-                                "União Européia",
-                                "Outros países")) +
+                     labels = c("Eastern" = "Países de leste europeu", 
+                                "EFTA" = "Área européia de livre comércio",
+                                "EU" = "União Européia",
+                                "Other" = "Outros países")) +
   theme(legend.position="bottom")
   
-
