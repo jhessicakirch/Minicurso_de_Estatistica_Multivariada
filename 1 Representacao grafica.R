@@ -55,10 +55,7 @@ legend("topright", inset=c(-.60,0), legend=c("NS","S"), pch=19, title="Sobreviv√
 
 # Utilizando pacotes 
 
-# install.packages("ggplot2")  # Instala os pacotes ggplot2
-install.packages(c("ggplot2", "scatterplot3d", "rgl", "GGally", "tidyr")) 
-
-
+# install.packages("ggplot2")  # Instala o pacote ggplot2
 # Utilizando o pacote ggplot2
 library(ggplot2)
 
