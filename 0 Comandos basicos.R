@@ -62,3 +62,19 @@ B %*% C # multiplicação de matrizes
 # são comumente utilizados na importação e criação de dados
 dados <- data.frame(Nome = y, Valor = x)
 dados
+
+# Instalação de pacotes
+
+pacotes <- c("ggplot2", "scatterplot3d", "rgl", "GGally", "tidyr", "MVN",
+             "biotools", "factoextra", "psych", "MASS", "ggrepel", "stringr")
+
+if(sum(as.numeric(!pacotes %in% installed.packages())) != 0){
+  instalador <- pacotes[!pacotes %in% installed.packages()]
+  for(i in 1:length(instalador)) {
+    install.packages(instalador, dependencies = T)
+    break()}
+  sapply(pacotes, require, character = T) 
+} else {
+  sapply(pacotes, require, character = T) 
+}
+
