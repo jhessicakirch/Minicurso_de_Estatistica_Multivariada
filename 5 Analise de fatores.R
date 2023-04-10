@@ -27,7 +27,7 @@ fit.pc$loadings         # Autovetores
 fit.pc$loadings[1:9,1:4]
 fit.pc$communality      # Comunalidade
 
-
+fa.diagram(fit.pc)
 
 # Exemplo pardais
 
@@ -49,6 +49,8 @@ fit.pc
 round(fit.pc$values, 3) # Autovalores
 fit.pc$loadings         # Autovetores
 fit.pc$communality      # Comunalidade
+
+fa.diagram(fit.pc)
 
 # Criando um gráfico biplot
 biplot <- data.frame(fit.pc$scores, Survivorship = pardais$Survivorship)
